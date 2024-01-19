@@ -70,6 +70,8 @@ Ok to proceed? (y) y
 
 - https://cloud.appwrite.io/
 
+- https://tanstack.com/query/latest/docs/react/overview
+
 ### Authentication Appwrite
 
 ### Intallation packages
@@ -81,6 +83,7 @@ Ok to proceed? (y) y
 - npm install -D @types/node
 - npx shadcn-ui@latest init
 - npm install appwrite
+- npm install @tanstack/react-query
 - npm install -g vercel
 
 ### shadcn/ui Components
@@ -88,6 +91,7 @@ Ok to proceed? (y) y
 - npx shadcn-ui@latest add button
 - npx shadcn-ui@latest add form
 - npx shadcn-ui@latest add input
+- npx shadcn-ui@latest add toast
 
 ## Project Steps
 
