@@ -17,9 +17,9 @@ If you are developing a production application, we recommend updating the config
 export default {
   // other rules...
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
 };
@@ -84,6 +84,7 @@ Ok to proceed? (y) y
 - npx shadcn-ui@latest init
 - npm install appwrite
 - npm install @tanstack/react-query
+- npm install react-dropzone
 - npm install -g vercel
 
 ### shadcn/ui Components
@@ -92,6 +93,7 @@ Ok to proceed? (y) y
 - npx shadcn-ui@latest add form
 - npx shadcn-ui@latest add input
 - npx shadcn-ui@latest add toast
+- npx shadcn-ui@latest add textarea
 
 ## Project Steps
 
