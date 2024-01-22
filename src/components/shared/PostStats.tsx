@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   useDeleteSavedPost,
   useGetCurrentUser,
   useLikePost,
   useSavePost,
-} from "@/lib/react-query/queriesAndMutations";
-import { Models } from "appwrite";
-import { checkIsLiked } from "@/lib/utils";
-import { Loader } from "lucide-react";
+} from '@/lib/react-query/queriesAndMutations';
+import { Models } from 'appwrite';
+import { checkIsLiked } from '@/lib/utils';
+import { Loader } from 'lucide-react';
 
 type PostStatsProps = {
-  post: Models.Document;
+  post?: Models.Document;
   userId: string;
 };
 
 const PostStats = ({ post, userId }: PostStatsProps) => {
-  const likesList = post.likes.map((user: Models.Document) => user.$id);
+  const likesList = post?.likes.map((user: Models.Document) => user.$id);
   const [likes, setLikes] = useState(likesList);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -27,7 +27,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
   const { data: currentUser } = useGetCurrentUser();
 
   const savedPostRecord = currentUser?.save.find(
-    (record: Models.Document) => record.post.$id === post.$id
+    (record: Models.Document) => record.post.$id === post?.$id
   );
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
     }
 
     setLikes(newLikes);
-    likePost({ postId: post.$id, likesArray: newLikes });
+    likePost({ postId: post?.$id || '', likesArray: newLikes });
   };
 
   const handleSavePost = (event: React.MouseEvent) => {
@@ -57,36 +57,36 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       setIsSaved(false);
       deleteSavedPost(savedPostRecord.$id);
     } else {
-      savePost({ userId, postId: post.$id });
+      savePost({ userId, postId: post?.$id || '' });
       setIsSaved(true);
     }
   };
 
   return (
-    <div className="flex justify-between items-center z-20">
-      <div className="flex gap-2 mr-5">
+    <div className='flex justify-between items-center z-20'>
+      <div className='flex gap-2 mr-5'>
         <img
-          className="cursor-pointer"
+          className='cursor-pointer'
           src={
             checkIsLiked(likes, userId)
-              ? "/assets/icons/liked.svg"
-              : "/assets/icons/like.svg"
+              ? '/assets/icons/liked.svg'
+              : '/assets/icons/like.svg'
           }
-          alt="like"
+          alt='like'
           width={20}
           height={20}
           onClick={handleLikePost}
         />
-        <p className="small-medium lg:base-medium">{likes.length}</p>
+        <p className='small-medium lg:base-medium'>{likes.length}</p>
       </div>
-      <div className="flex gap-2 mr-5">
+      <div className='flex gap-2 mr-5'>
         {isSavingPost || isDeletingSaved ? (
           <Loader />
         ) : (
           <img
-            className="cursor-pointer"
-            src={isSaved ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
-            alt="save"
+            className='cursor-pointer'
+            src={isSaved ? '/assets/icons/saved.svg' : '/assets/icons/save.svg'}
+            alt='save'
             width={20}
             height={20}
             onClick={handleSavePost}
