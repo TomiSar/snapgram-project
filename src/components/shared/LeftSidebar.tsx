@@ -41,7 +41,6 @@ const LeftSidebar = () => {
         <ul className="flex flex-col gap-6">
           {sidebarLinks.map((link: INavLink) => {
             const linkIsActive = pathname === link.route;
-
             return (
               <li
                 className={`leftsidebar-link group ${
