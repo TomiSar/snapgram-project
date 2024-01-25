@@ -1,8 +1,6 @@
-'use client';
-
-import { ID, Query } from 'appwrite';
-import { INewPost, INewUser, IUpdatePost, IUpdateUser } from '@/types';
-import { account, appwriteConfig, avatars, databases, storage } from './config';
+import { ID, Query } from "appwrite";
+import { INewPost, INewUser, IUpdatePost, IUpdateUser } from "@/types";
+import { account, appwriteConfig, avatars, databases, storage } from "./config";
 
 // ============================================================
 // AUTH
@@ -90,7 +88,7 @@ export async function getCurrentUser() {
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
-      [Query.equal('accountId', currentAccount.$id)]
+      [Query.equal("accountId", currentAccount.$id)]
     );
 
     if (!currentUser) throw Error;
@@ -105,7 +103,7 @@ export async function getCurrentUser() {
 // ============================== SIGN OUT
 export async function signOutAccount() {
   try {
-    const session = await account.deleteSession('current');
+    const session = await account.deleteSession("current");
     return session;
   } catch (error) {
     console.log(error);
@@ -132,7 +130,7 @@ export async function createPost(post: INewPost) {
     }
 
     // Convert tags into array
-    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+    const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
     // Create post
     const newPost = await databases.createDocument(
@@ -183,7 +181,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      'top',
+      "top",
       100
     );
 
@@ -200,7 +198,7 @@ export async function deleteFile(fileId: string) {
   try {
     await storage.deleteFile(appwriteConfig.storageId, fileId);
 
-    return { status: 'ok' };
+    return { status: "ok" };
   } catch (error) {
     console.log(error);
   }
@@ -212,7 +210,7 @@ export async function getRecentPosts() {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.orderDesc('$createdAt'), Query.limit(20)]
+      [Query.orderDesc("$createdAt"), Query.limit(20)]
     );
 
     if (!posts) throw Error;
@@ -274,7 +272,7 @@ export async function deleteSavedPost(savedRecordId: string) {
 
     if (!statusCode) throw Error;
 
-    return { status: 'Ok' };
+    return { status: "Ok" };
   } catch (error) {
     console.log(error);
   }
@@ -325,7 +323,7 @@ export async function updatePost(post: IUpdatePost) {
     }
 
     // Convert tags into array
-    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+    const tags = post.tags?.replace(/ /g, "").split(",") || [];
 
     //  Update post
     const updatedPost = await databases.updateDocument(
@@ -378,7 +376,24 @@ export async function deletePost(postId?: string, imageId?: string) {
 
     await deleteFile(imageId);
 
-    return { status: 'Ok' };
+    return { status: "Ok" };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// ============================== GET POSTS
+export async function searchPosts(searchTerm: string) {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      [Query.search("caption", searchTerm)]
+    );
+
+    if (!posts) throw Error;
+
+    return posts;
   } catch (error) {
     console.log(error);
   }
@@ -386,7 +401,7 @@ export async function deletePost(postId?: string, imageId?: string) {
 
 // ============================== GET INFINITE POSTS
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-  const queries: any[] = [Query.orderDesc('$updatedAt'), Query.limit(9)];
+  const queries: any[] = [Query.orderDesc("$updatedAt"), Query.limit(9)];
 
   if (pageParam) {
     queries.push(Query.cursorAfter(pageParam.toString()));
@@ -407,23 +422,6 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
   }
 }
 
-// ============================== GET POSTS
-export async function searchPosts(searchTerm: string) {
-  try {
-    const posts = await databases.listDocuments(
-      appwriteConfig.databaseId,
-      appwriteConfig.postCollectionId,
-      [Query.search('caption', searchTerm)]
-    );
-
-    if (!posts) throw Error;
-
-    return posts;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // ============================== GET USER'S POST
 export async function getUserPosts(userId?: string) {
   if (!userId) return;
@@ -432,7 +430,7 @@ export async function getUserPosts(userId?: string) {
     const post = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
-      [Query.equal('creator', userId), Query.orderDesc('$createdAt')]
+      [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
     );
 
     if (!post) throw Error;
@@ -449,7 +447,7 @@ export async function getUserPosts(userId?: string) {
 
 // ============================== GET USERS
 export async function getUsers(limit?: number) {
-  const queries: any[] = [Query.orderDesc('$createdAt')];
+  const queries: any[] = [Query.orderDesc("$createdAt")];
 
   if (limit) {
     queries.push(Query.limit(limit));

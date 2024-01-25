@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PostStats from "./PostStats";
 
 type GridPostListProps = {
-  posts: Models.Document[];
+  posts?: Models.Document[];
   showUser?: boolean;
   showStats?: boolean;
 };
@@ -18,7 +18,7 @@ const GridPostList = ({
 
   return (
     <ul className="grid-container">
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <li className="relative min-w-80 h-80" key={post.$id}>
           <Link className="grid-post_link" to={`/posts/${post.$id}`}>
             <img
